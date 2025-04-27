@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "check-format": "prettier --check --cache ,",
+    "check-format": "prettier --check --cache .",
     "dev": "next dev",
     "format": "prettier --write --cache .",
     "lint": "next lint && pnpm check-format",
-    "start": "next start"
+    "prepare": "husky",
+    "start": "next start",
+    "test": "echo '此处就是一个占位符'"
   },
   "dependencies": {
     "next": "15.3.1",
