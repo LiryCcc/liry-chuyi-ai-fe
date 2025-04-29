@@ -6,7 +6,7 @@
   "scripts": {
     "build": "next build",
     "check-format": "prettier --check --cache .",
-    "dev": "next dev",
+    "dev": "next dev --port 13165",
     "format": "prettier --write --cache .",
     "lint": "next lint && pnpm check-format",
     "prepare": "husky",
