@@ -14,6 +14,7 @@
     "test": "echo '此处就是一个占位符'"
   },
   "dependencies": {
+    "@douyinfe/semi-ui": "^2.78.0",
     "ahooks": "^3.8.4",
     "axios": "^1.9.0",
     "classnames": "^2.5.1",
