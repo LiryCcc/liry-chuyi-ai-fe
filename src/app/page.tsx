@@ -1,5 +1,4 @@
-const Home = () => {
-  return <div className='text-red-500'>{'Liry Chuyi ai Site'}</div>;
-};
-
-export default Home;
+import { redirect } from 'next/navigation';
+export default function Home() {
+  redirect('/chat');
+}
