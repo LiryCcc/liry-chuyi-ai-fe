@@ -1,15 +1,12 @@
 'use client';
 import { ChatBox } from '@/components/ChatBox/ChatBox';
+import { ModelBox } from '@/components/ModelBox/ModelBox';
 import { Button, Modal } from '@douyinfe/semi-ui';
 import { useState } from 'react';
-export async function getServerSideProps() {
-  // 在服务器端获取数据
-  const initialMessage = 'Hello! How can I assist you today?';
-  return { props: { initialMessage } };
-}
 
-export default function ChatPage({ initialMessage }: { initialMessage: string }) {
+export default function ChatPage() {
   const [visible, setVisible] = useState(false);
+  const [initialMessage, setInitialMessage] = useState('Hello! How can I assist you today?');
   const showDialog = () => {
     setVisible(true);
   };
@@ -39,6 +36,8 @@ export default function ChatPage({ initialMessage }: { initialMessage: string })
         <br />
         More content...
       </Modal>
+      <h1>选择模型</h1>
+      <ModelBox/>
       <h1>Chat Page</h1>
       <ChatBox initialMessage={initialMessage} />
     </div>

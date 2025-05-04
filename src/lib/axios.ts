@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { DEEPSEEK_API_KEY } from '@/configs';
 
 const axiosInstance = axios.create({
   baseURL: 'https://api.deepseek.com', // DeepSeek API 基础地址
@@ -7,7 +8,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    config.headers['Authorization'] = `Bearer ${process.env.DEEPSEEK_API_KEY}`;
+    console.log('key',DEEPSEEK_API_KEY);
+    config.headers['Authorization'] = `Bearer ${DEEPSEEK_API_KEY}`;
     return config;
   },
   (error) => Promise.reject(error)

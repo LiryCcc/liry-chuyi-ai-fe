@@ -1,39 +1,37 @@
-import { sendMessage } from '@/lib/deepseek';
-import { useEffect, useState } from 'react';
+import { deepseekMessage } from "@/app/api/chat";
+import { Button, Input } from "@douyinfe/semi-ui";
+import { useState } from "react";
 
 export const ChatBox = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [input, setInput] = useState('');
-  const handleSend = async () => {
-    if (input.trim() === '') return;
+  const [message, setMessage] = useState<string[]>([]);
+  const getDeepSeekMessage = async () => {
+    try {
+      const stream = await deepseekMessage();
+      const decoder = new TextDecoder();
+      let fullMessage = '';
 
-    // 添加用户消息
-    setMessages((prev) => [...prev, input]);
-
-    // 调用 DeepSeek API 获取回复
-    const response = await sendMessage(input);
-    setMessages((prev) => [...prev, response]);
-
-    setInput('');
-  };
-
-  useEffect(() => {
-    // 检查登录状态
-    const sessionToken = cookies().get('session-token');
-    if (!sessionToken) {
-      window.location.href = '/login';
+      const reader = stream.getReader();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          console.log('Stream ended');
+          break;
+        }
+        const chunk = decoder.decode(value, { stream: true });
+        fullMessage += chunk;
+        setMessage([fullMessage]);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-  }, []);
-
+  };
   return (
     <div>
-      <div>
-        {messages.map((message, index) => (
-          <p key={index}>{message}</p>
-        ))}
+      <Input/>
+      <Button onClick={getDeepSeekMessage}>搜索</Button>
+      {message.map((msg, index) => (
+        <div key={index}>{msg}</div>
+      ))}
       </div>
-      <input type='text' value={input} onChange={(e) => setInput(e.target.value)} placeholder='Type your message' />
-      <button onClick={handleSend}>Send</button>
-    </div>
   );
 };

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build",
+    "build": "next build --profile",
     "check-format": "prettier --check --cache .",
     "dev": "next dev --port 13165",
     "format": "prettier --write --cache .",
