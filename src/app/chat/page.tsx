@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 export default function ChatPage() {
   const [visible, setVisible] = useState(false);
-  const [initialMessage, setInitialMessage] = useState('Hello! How can I assist you today?');
   const showDialog = () => {
     setVisible(true);
   };
