@@ -1,3 +1,4 @@
+import { DEEPSEEK_API_KEY } from '@/configs';
 import axiosInstance from '@/lib/axios';
 
 interface IModelItem {
@@ -5,7 +6,6 @@ interface IModelItem {
   object: string;
   owned_by: number;
 }
-
 const getModels = async (): Promise<IModelItem[]> => {
   const res = await axiosInstance('/models', {
     method: 'GET',
@@ -16,46 +16,56 @@ const getModels = async (): Promise<IModelItem[]> => {
   return res.data as IModelItem[];
 };
 const deepseekMessage = async () => {
-  const res = await axiosInstance('/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive'
-    },
-    data: {
-      messages: [
-        {
-          content: 'You are a helpful assistant',
-          role: 'system'
-        },
-        {
-          content: 'Hi',
-          role: 'user'
-        }
-      ],
-      model: 'deepseek-chat',
-      frequency_penalty: 0,
-      max_tokens: 2048,
-      presence_penalty: 0,
-      response_format: {
-        type: 'text'
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        Authorization: `Bearer ${DEEPSEEK_API_KEY}`
       },
-      stop: null,
-      stream: true,
-      stream_options: null,
-      temperature: 1,
-      top_p: 1,
-      tools: null,
-      tool_choice: 'none',
-      logprobs: false,
-      top_logprobs: null
-    },
-    responseType: 'stream'
-  });
-  console.log('gb123resdata', res, res.data);
-  return res;
+      body: JSON.stringify({
+        messages: [
+          {
+            content: 'You are a helpful assistant',
+            role: 'system'
+          },
+          {
+            content: 'Hi',
+            role: 'user'
+          }
+        ],
+        model: 'deepseek-chat',
+        frequency_penalty: 0,
+        max_tokens: 2048,
+        presence_penalty: 0,
+        response_format: {
+          type: 'text'
+        },
+        stop: null,
+        stream: true,
+        stream_options: null,
+        temperature: 1,
+        top_p: 1,
+        tools: null,
+        tool_choice: 'none',
+        logprobs: false,
+        top_logprobs: null
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    console.log('API Response:', res);
+    return res;
+  } catch (error) {
+    console.error('Error in deepseekMessage:', error);
+    throw error;
+  }
 };
 
 export { deepseekMessage, getModels };
