@@ -39,7 +39,7 @@ export default function ChatPage() {
       <h1>选择模型</h1>
       <ModelBox/>
       <h1>Chat Page</h1>
-      <ChatBox initialMessage={initialMessage} />
+      <ChatBox />
     </div>
   );
 }
