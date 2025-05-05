@@ -1,6 +1,6 @@
-import { deepseekMessage } from "@/app/api/chat";
-import { Button, Input } from "@douyinfe/semi-ui";
-import { useState } from "react";
+import { deepseekMessage } from '@/app/api/chat';
+import { Button, Input } from '@douyinfe/semi-ui';
+import { useState } from 'react';
 
 export const ChatBox = () => {
   const [message, setMessage] = useState<string[]>([]);
@@ -27,11 +27,11 @@ export const ChatBox = () => {
   };
   return (
     <div>
-      <Input/>
+      <Input />
       <Button onClick={getDeepSeekMessage}>搜索</Button>
       {message.map((msg, index) => (
         <div key={index}>{msg}</div>
       ))}
-      </div>
+    </div>
   );
 };

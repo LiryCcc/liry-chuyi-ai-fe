@@ -1,12 +1,12 @@
-import { getModels } from "@/app/api/chat";
-import { useEffect, useState } from "react";
+import { getModels } from '@/app/api/chat';
+import { useEffect, useState } from 'react';
 
 export const ModelBox = () => {
-    const [list, setList] = useState<Array<string>>([]);
-    const fetchModels = async (): Promise<void> => {
+  const [list, setList] = useState<Array<string>>([]);
+  const fetchModels = async (): Promise<void> => {
     try {
       const res = await getModels();
-      const ids = res.map(item => item.id);
+      const ids = res.map((item) => item.id);
       setList(ids);
     } catch (error) {
       console.error('Error fetching models:', error);
@@ -14,12 +14,12 @@ export const ModelBox = () => {
   };
   useEffect(() => {
     fetchModels();
-  }, [])
+  }, []);
   return (
     <div>
       {list.map((item) => (
         <p key={item}>{item}</p>
       ))}
     </div>
-  )
-}
+  );
+};

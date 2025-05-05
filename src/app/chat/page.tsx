@@ -36,7 +36,7 @@ export default function ChatPage() {
         More content...
       </Modal>
       <h1>选择模型</h1>
-      <ModelBox/>
+      <ModelBox />
       <h1>Chat Page</h1>
       <ChatBox />
     </div>
