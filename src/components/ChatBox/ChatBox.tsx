@@ -1,12 +1,12 @@
 import { deepseekMessage } from '@/app/api/chat';
 import { Button, Input } from '@douyinfe/semi-ui';
 import { useState } from 'react';
-
 export const ChatBox = () => {
   const [message, setMessage] = useState<string[]>([]);
-  const getDeepSeekMessage = async () => {
+  const [inputValue, setInputValue] = useState('');
+  const getDeepSeekMessage = async (userMessage: string) => {
     try {
-      const response = await deepseekMessage();
+      const response = await deepseekMessage(userMessage);
       if (!response.body) {
         throw new Error('No response body');
       }
@@ -21,7 +21,6 @@ export const ChatBox = () => {
           break;
         }
         const chunk = decoder.decode(value, { stream: true });
-        // 解析每个块并提取内容
         chunk.split('\n').forEach((line) => {
           if (line.startsWith('data: ')) {
             const data = line.slice(6);
@@ -29,7 +28,8 @@ export const ChatBox = () => {
             try {
               const json = JSON.parse(data);
               if (json.choices[0].delta.content) {
-                fullMessage += json.choices[0].delta.content;
+                // 移除换行符和反斜杠
+                fullMessage += json.choices[0].delta.content.replace(/[\n\\]/g, ' ');
                 setMessage([fullMessage]);
               }
             } catch (error) {
@@ -42,10 +42,18 @@ export const ChatBox = () => {
       console.error('Error:', error);
     }
   };
+
+  const handleSend = () => {
+    if (inputValue.trim()) {
+      getDeepSeekMessage(inputValue);
+      setInputValue('');
+    }
+  };
+
   return (
     <div>
-      <Input />
-      <Button onClick={getDeepSeekMessage}>搜索</Button>
+      <Input value={inputValue} onChange={(value) => setInputValue(value)} />
+      <Button onClick={handleSend}>发送</Button>
       {message.map((msg, index) => (
         <div key={index}>{msg}</div>
       ))}
